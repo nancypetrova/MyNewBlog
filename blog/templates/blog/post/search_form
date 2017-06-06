@@ -1,0 +1,12 @@
+{% extends "blog/base.html" %}
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+    <link href="https://fonts.googleapis.com/css?family=Bad+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Neucha" rel="stylesheet">
+    <form action="/search/" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Найти">
+    </form>
+
+{% endblock %}

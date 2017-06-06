@@ -1,0 +1,41 @@
+{% extends "blog/base.html" %}
+{% block title %}Мой блог {% endblock %}
+{% load blog_tags %}
+{% block content %}
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bad+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Neucha" rel="stylesheet">
+    <br>
+    <p><font size="35" face='Bad Script'>Motivation&Health</font></p>
+    {% if tag %}
+        <h2>Смотреть посты с тегами "{{ tag.name }}"</h2>
+    {% endif %}
+
+    {% for post in posts %}
+        <h2>
+
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </h2>
+
+        <p class="tags">Метки:
+            {% for tag in post.tags.all %}
+                <a href="{% url "blog:post_list_by_tag" tag.slug %}">
+                    {{ tag.name }}
+                </a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <p class="date">
+            Опубликовано {{ post.publich }} от {{ post.author }}
+            {{ post.body|markdown|truncatewords_html:50 }}
+            <a href="{{ post.get_absolute_url }}"> Читать далее</a>
+        </p>
+
+    {% endfor %}
+
+    {% include 'pagination.html' with page=posts %}
+
+{% endblock %}

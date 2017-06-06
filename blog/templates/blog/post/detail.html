@@ -1,0 +1,58 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+{% block title %}{{ post.title }} {% endblock %}
+<link href="https://fonts.googleapis.com/css?family=Bad+Script" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Neucha" rel="stylesheet">
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p class="date">
+        Опубликовано {{ post.publich }} от {{ post.author }}
+
+    </p>
+
+    {{ post.body|markdown }}
+    <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+    <script src="//yastatic.net/share2/share.js"></script>
+    <div class="ya-share2" data-services="collections,vkontakte,facebook,odnoklassniki,moimir"></div>
+    <p><a href="{% url "blog:post_share" post.id %}">Отправить по e-mail</a></p>
+
+    {% with comments.count as total_comments %}
+        <h2>
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="info">
+                Комментарий {{ forloop.counter }} от {{ comment.name }}
+                {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p>Пока нет комментариев</p>
+    {% endfor %}
+
+    <h2>Вам также будет интересно:</h2>
+    {% for post in similar_posts %}
+        <p><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></p>
+    {% empty %}
+        Нет схожих постов
+
+    {% endfor %}
+
+
+    {% if new_comment %}
+        <h2>Ваш комментарий был добавлен</h2>
+    {% else %}
+        <h2>Добавить новый комментарий:</h2>
+        <form action="." method="post">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Добавить комментарий"></p>
+        </form>
+    {% endif %}
+
+
+{% endblock %}

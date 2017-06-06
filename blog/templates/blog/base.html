@@ -1,0 +1,49 @@
+{% load blog_tags %}
+{% load staticfiles %}
+<html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Neucha" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+</head>
+<body>
+
+<div id="content">
+    {% block content %} {% endblock %}
+</div>
+
+<div id="sidebar">
+
+    <link href="https://fonts.googleapis.com/css?family=Bad+Script" rel="stylesheet">
+
+    <p><font size="20" face='Bad Script'>Блог Анастасии Петровой</font></p>
+    <p><font size="4" face='Bad Script'>Всем привет! Меня зовут Настя, я студентка 1 курса университета ИТМО и это мой
+        блог, в котром я хотела бы
+        делиться полезными статьями по саморазвитию и мотивации. Также вы сможете найти тут посты о книгах и фильмах и
+        рецепты полезных блюд. Добро пожаловать!</font></p>
+
+    <a href="http://vk.com/nancypetrova">Вконтакте </a>
+    <p><font size="6" face='Bad Script'>Всего записей в блоге: <b>{% total_posts %}</b></font></p>
+    <p><font size="6" face='Bad Script'>Последние записи:</font></p>
+    {% show_latest_posts 5 %}
+
+    <p><font size="6" face='Bad Script'>Самое комментируемое:</font></p>
+    {% get_most_commented_posts as get_most_commented_posts %}
+    <ul>
+        {% for post in get_most_commented_posts %}
+            <li>
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </li>
+        {% endfor %}
+
+    </ul>
+
+
+</div>
+
+</body>
+</html>
